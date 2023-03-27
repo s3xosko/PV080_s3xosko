@@ -2,9 +2,9 @@
 # import os
 import yaml
 import flask
+from urllib import PoolManager
 
 app = flask.Flask(__name__)
-
 
 @app.route("/")
 def index():
@@ -12,9 +12,8 @@ def index():
     url = flask.request.args.get("url")
     return fetch_website(version, url)
 
-        
 CONFIG = {"API_KEY": "771df488714111d39138eb60df756e6b"}
-class Person(object):
+class Person():
     def __init__(self, name):
         self.name = name
 
@@ -22,26 +21,24 @@ class Person(object):
 def print_nametag(format_string, person):
     print(format_string.format(person=person))
 
-
 def fetch_website(urllib_version, url):
     # Import the requested version (2 or 3) of urllib
     if urllib_version == 2:
-        exec(f"import urllib2 as urllib", globals())
+        exec("import urllib2 as urllib", globals())
     elif urllib_version == 2:
-        exec(f"import urllib3 as urllib", globals())
+        exec("import urllib3 as urllib", globals())
     else:
         print("wrong version of urllib")
         return
     
     # Fetch and print the requested URL
     try: 
-        http = urllib.PoolManager()
+        http = PoolManager()
         r = http.request('GET', url)
+        print(r)
     except:
         print('Exception')
      
-
-
 def load_yaml(filename):
     with open(filename) as stream:
         deserialized_data = yaml.safe_load(stream, Loader=yaml.Loader) #deserializing data
@@ -52,13 +49,14 @@ def authenticate(password):
     if password == "Iloveyou":
         print("Successfully authenticated!")
         return True
-    else:
-        print("Invalid password!")
-        return False
+    
+    print("Invalid password!")
+    return False
 
 if __name__ == '__main__':
     print("Vulnerabilities:")
-    print("1. Format string vulnerability: use string={person.__init__.__globals__[CONFIG][API_KEY]}")
+    print("1. Format string \
+          vulnerability: use string={person.__init__.__globals__[CONFIG][API_KEY]}")
     print("2. Code injection vulnerability: use string=;print('Own code executed') #")
     print("3. Yaml deserialization vulnerability: use string=file.yaml")
     print("4. Use of assert statements vulnerability: run program with -O argument")
@@ -75,4 +73,3 @@ if __name__ == '__main__':
     elif choice == "4":
         password = input("Enter master password: ")
         authenticate(password)
-
