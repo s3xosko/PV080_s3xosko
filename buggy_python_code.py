@@ -25,9 +25,13 @@ def print_nametag(format_string, person):
 
 def fetch_website(urllib_version, url):
     # Import the requested version (2 or 3) of urllib
-    exec(f"import urllib{urllib_version} as urllib", globals())
+    if urllib_version == 2 or urllib_version == 3:
+        exec(f"import urllib{urllib_version} as urllib", globals())
+    else:
+	print("wrong version")
+	return
+    
     # Fetch and print the requested URL
- 
     try: 
         http = urllib.PoolManager()
         r = http.request('GET', url)
@@ -36,14 +40,18 @@ def fetch_website(urllib_version, url):
 
 
 def load_yaml(filename):
-    stream = open(filename)
-    deserialized_data = yaml.load(stream, Loader=yaml.Loader) #deserializing data
+    with open(filename) as stream:
+        deserialized_data = yaml.safe_load(stream, Loader=yaml.Loader) #deserializing data
     return deserialized_data
     
 def authenticate(password):
     # Assert that the password is correct
-    assert password == "Iloveyou", "Invalid password!"
-    print("Successfully authenticated!")
+    if password == "Iloveyou":
+        print("Successfully authenticated!")
+	return True
+    else:
+	print("Invalid password!")
+	return False
 
 if __name__ == '__main__':
     print("Vulnerabilities:")
