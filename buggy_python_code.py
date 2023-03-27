@@ -1,5 +1,5 @@
-import sys 
-import os
+# import sys 
+# import os
 import yaml
 import flask
 
@@ -28,8 +28,8 @@ def fetch_website(urllib_version, url):
     if urllib_version == 2 or urllib_version == 3:
         exec(f"import urllib{urllib_version} as urllib", globals())
     else:
-	print("wrong version")
-	return
+        print("wrong version")
+        return None
     
     # Fetch and print the requested URL
     try: 
@@ -48,10 +48,10 @@ def authenticate(password):
     # Assert that the password is correct
     if password == "Iloveyou":
         print("Successfully authenticated!")
-	return True
+        return True
     else:
-	print("Invalid password!")
-	return False
+        print("Invalid password!")
+        return False
 
 if __name__ == '__main__':
     print("Vulnerabilities:")
